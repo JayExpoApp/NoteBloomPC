@@ -16,11 +16,10 @@ jobs:
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: '22'
 
       - name: Install dependencies
-        run: npm install
+        run: npm install --legacy-peer-deps
 
       - name: Build React app
         run: npm run react-build
@@ -33,17 +32,18 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Upload installer EXE
+      - name: Upload Setup EXE
         uses: actions/upload-artifact@v4
         with:
           name: NoteBloom-Setup-Windows
           path: dist/*Setup*.exe
           retention-days: 30
+          if-no-files-found: warn
 
-      - name: Upload portable EXE
+      - name: Upload Portable EXE
         uses: actions/upload-artifact@v4
         with:
           name: NoteBloom-Portable-Windows
-          path: dist/*.exe
+          path: dist/*portable*.exe
           retention-days: 30
           if-no-files-found: warn
